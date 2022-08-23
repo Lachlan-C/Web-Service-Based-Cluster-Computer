@@ -2,6 +2,7 @@ import string
 import requests
 import sys
 import socket
+from time import sleep
 
 def get_IP(rank):
     with open('servers.txt') as f:
@@ -19,7 +20,6 @@ def get_rank():
         IP = '127.0.0.1'
     finally:
         s.close()
-    print('CURRENT IP: ' + IP)
     with open('servers.txt') as f:
         content = f.readlines()
     index = [x for x in range(len(content)) if IP in content[x].lower()]
@@ -28,16 +28,18 @@ def get_rank():
 def send(data, destRank):
     url = 'http://' + get_IP(destRank) + ':8080/recv'
 
-    dest = get_IP(destRank)
+    sender = get_rank()
 
-    myobj = {'data':data,'dest':dest}
+    myobj = {'data':data,'from':sender}
 
     x = requests.post(url, json=myobj)
 
-    print(x.text)
-
 def recieve(source):
-    string
-    url = 'http://' + str(get_IP(get_rank())) + ':8080/recv' #+ str(source) 
-    print(url)
-    return requests.get(url)
+    
+    while True:
+        url = 'http://' + str(get_IP(get_rank())) + ':8080/recv/' + str(source)
+        message = requests.get(url).text
+        if message != "ARRAY EMPTY":
+            break
+        sleep(1)
+    return message

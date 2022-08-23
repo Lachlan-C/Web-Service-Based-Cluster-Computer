@@ -1,5 +1,7 @@
 from array import array
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from multiprocessing.dummy import Array
+import ast
 
 array = []
 class Server(BaseHTTPRequestHandler):
@@ -24,13 +26,26 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
 
     def do_GET(self):
-        if str(self.path) == '/recv':
+        if str(self.path)[:5] == '/recv':
             if len(array) != 0:
-                print(array[0])
-                
-                self._set_response()
-                self.wfile.write(str(array[0]).encode('utf-8'))
-                array.pop(0)
+                y = 0
+                found = False
+                index = 0
+                for x in array:
+                    x = ast.literal_eval(x)
+                    if str(x["from"]) == self.path[6:] and found == False:
+                        found = True
+                        y = x
+                    if found == False:
+                        index += 1
+                if found == False:
+                    self._set_response()
+                    self.wfile.write("ARRAY EMPTY".encode('utf-8'))   
+                else:
+                    self._set_response()
+                    self.wfile.write(str(y).encode('utf-8'))
+                    print(index)
+                    array.pop(index)
             else: 
                 self._set_response()
                 self.wfile.write("ARRAY EMPTY".encode('utf-8'))
