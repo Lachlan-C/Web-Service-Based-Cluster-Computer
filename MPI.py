@@ -3,6 +3,7 @@ import requests
 import sys
 import socket
 from time import sleep
+import ast
 
 def get_IP(rank):
     with open('servers.txt') as f:
@@ -25,6 +26,10 @@ def get_rank():
     index = [x for x in range(len(content)) if IP in content[x].lower()]
     return index[0]
 
+def get_num_nodes():
+    with open('servers.txt') as f:
+        return len(f.readlines())
+
 def send(data, destRank):
     url = 'http://' + get_IP(destRank) + ':8080/recv'
 
@@ -42,4 +47,4 @@ def recieve(source):
         if message != "ARRAY EMPTY":
             break
         sleep(1)
-    return message
+    return ast.literal_eval(message)["data"]
