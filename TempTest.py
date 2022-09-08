@@ -1,16 +1,20 @@
+from re import M
 from time import sleep
-import MPI
+from MPI import get_IP
+import requests
 
-print(MPI.get_num_nodes())
-MPI.send([1,2,3],0)
-sleep(1)
-MPI.send(2,0)
+file = "test"
 
-sleep(1)
+url = 'http://' + get_IP(0) + ':8081/upload/' + file
 
-MPI.get_rank()
-print(type(MPI.recieve(0)))
-sleep(1)
-print(MPI.recieve(1))
-sleep(1)
-print(MPI.recieve(0))
+myobj = bytearray()
+
+f = open(file + ".py","rb")
+
+myobj = f.read()
+
+print(myobj)
+
+f.close()
+
+x = requests.post(url, myobj)
