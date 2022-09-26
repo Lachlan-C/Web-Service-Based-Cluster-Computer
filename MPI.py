@@ -46,5 +46,4 @@ def recieve(source):
         message = requests.get(url).text
         if message != "ARRAY EMPTY":
             break
-        sleep(1)
     return ast.literal_eval(message)["data"]
