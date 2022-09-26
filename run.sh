@@ -1,0 +1,2 @@
+#!/bin/bash
+sshpass -p 'pi' ssh pi@192.168.0.238 'cd Documents/Web-Service-Based-Cluster-Computer && python3 MPImatrixmultiply.py' & sshpass -p 'pi' ssh pi@192.168.0.193 'cd Documents/Web-Service-Based-Cluster-Computer && python3 MPImatrixmultiply.py'
