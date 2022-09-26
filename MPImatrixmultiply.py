@@ -4,7 +4,7 @@ from time import time
 
 # NUM = Number of Nodes
 
-NUM = 256
+NUM = 4
 number_send = int(NUM / MPI.get_num_nodes())
 
 a = [[randint(1,99) for i in range(NUM)] for j in range(NUM)]
@@ -46,7 +46,9 @@ if MPI.get_rank() == 0:
     output = []
     for i in range(MPI.get_num_nodes()):
         output= output+MPI.recieve(i)
-    f = open("OUTPUT.txt","w")
-    f.write("Time: " + str(time() - start))
+
+    end = str(time() - start)
+    f = open("OUTPUT.txt","a")
+    f.write("Time: " + end + " SIZE: " + str(NUM) + "x" + str(NUM) + "\n")
     f.close()
-    print("Time: ", time() - start)
+    print("Time: ", end, " SIZE: ", str(NUM),"x",str(NUM))
