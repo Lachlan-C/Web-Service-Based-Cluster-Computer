@@ -1,3 +1,4 @@
+from hashlib import new
 import grequests
 from array import array
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -6,6 +7,18 @@ import ast
 from os.path import exists
 from MPI import get_IP, get_num_nodes
 import subprocess
+import requests
+
+def CheckServersAndUpdate():
+    ServerList = open('servers.txt', 'r')
+    lines = ServerList.readlines()
+    newlist = []
+    for i in lines:
+        url = 'http://' + str(i) + ':8081/ping'
+        message = requests.get(url).text
+        if message == "Server Online":
+            newlist += i
+    print(newlist)
 
 array = []
 class Server(BaseHTTPRequestHandler):
@@ -32,10 +45,12 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
 
     def do_GET(self):
+        if str(self.path)[:5] == '/ping':
+            self._set_response()
+            self.wfile.write("Server Online".encode('utf-8'))
         if str(self.path)[:5] == '/run/':
             file_exists = exists(str(self.path[5:]) + ".py")
             if file_exists:
-
                 print("Running code ", str(self.path[5:]) + ".py")
                 print(subprocess.Popen(["python3", str(self.path[5:]) + ".py"]))
                 response = "File ran " + str(self.path[5:] + ".py")
