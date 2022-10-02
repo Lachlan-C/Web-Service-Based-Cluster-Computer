@@ -11,7 +11,7 @@ for i in range(get_num_nodes()):
 
     myobj = bytearray()
 
-    f = open(file + ".py","rb")
+    f = open(file,"rb")
 
     myobj = f.read()
 

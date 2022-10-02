@@ -20,7 +20,7 @@ class Server(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
 
         if self.path[:8] == '/upload/':
-            file = str(self.path[8:]) + ".py"
+            file = str(self.path[8:])
             print(file)
             print(post_data)
             
@@ -37,7 +37,7 @@ class Server(BaseHTTPRequestHandler):
             if file_exists:
 
                 print("Running code ", str(self.path[5:]) + ".py")
-                print(subprocess.run(["python3", str(self.path[5:]) + ".py"], capture_output=True))
+                print(subprocess.Popen(["python3", str(self.path[5:]) + ".py"]))
                 response = "File ran " + str(self.path[5:] + ".py")
                 self._set_response()
                 self.wfile.write(response.encode('utf-8'))
