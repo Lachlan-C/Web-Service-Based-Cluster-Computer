@@ -4,7 +4,7 @@ from MPI import get_IP
 from MPI import get_num_nodes
 import requests
 
-file = "MPImatrixmultiply"
+file = "MPImatrixmultiply.py"
 
 for i in range(get_num_nodes()):
     url = 'http://' + get_IP(i) + ':8081/upload/' + file
