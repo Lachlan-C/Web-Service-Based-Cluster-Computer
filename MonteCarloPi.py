@@ -27,6 +27,6 @@ if MPI.get_rank() == 0:
 
     end = str(time() - start)
     f = open("OUTPUT-PI.txt","a")
-    f.write("Time: " + end + " NITTER: " + str(NITER) + "\n")
+    f.write("Time: " + end + " NITER: " + str(NITER) + "\n")
     f.close()
     print("Time: ", end, " PI: ", str(output))
